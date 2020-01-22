@@ -1,23 +1,31 @@
 #!/bin/bash
-YEAR=2019
-DECADE=2010
-while [ $DECADE -ge 1910 ]
+END_YEAR=2019
+END_DECADE=2010
+START_YEAR=1910
+START_DECADE=1910
+
+CURRENT_YEAR = $START_YEAR
+CURRENT_DECADE = $START_DECADE
+
+echo "Welcome to the Translink Buzzer download tool\nPlease enter"
+
+while [ $CURRENT_DECADE -le $END_DECADE ]
 do
-    while [ $YEAR -ge $DECADE ]
+    while [ $CURRENT_YEAR -le $END_YEAR ]
     do
-        wget -r -A *.pdf https://www.translink.ca/Rider-Guide/Print-Buzzer.aspx?year=$YEAR
-        cd www.translink.ca/-/media/Documents/rider_guide/Buzzer-Vault/${DECADE}s/
-        mv ${YEAR}/* .
-        rmdir ${YEAR}
+        wget -r -A *.pdf https://www.translink.ca/Rider-Guide/Print-Buzzer.aspx?END_YEAR=$CURRENT_YEAR
+        cd www.translink.ca/-/media/Documents/rider_guide/Buzzer-Vault/${CURRENT_DECADE}s/
+        mv ${CURRENT_YEAR}/* .
+        rmdir ${CURRENT_YEAR}
         cd ../../../../../../../
-        YEAR=`expr $YEAR - 1`
+        CURRENT_YEAR=`expr $CURRENT_YEAR + 1`
     done
-    cd www.translink.ca/-/media/Documents/rider_guide/Buzzer-Vault/${DECADE}s/
-    pdfunite *.pdf ${DECADE}s.pdf
+    cd www.translink.ca/-/media/Documents/rider_guide/Buzzer-Vault/${CURRENT_DECADE}s/
+    pdfunite *.pdf ${CURRENT_DECADE}s.pdf
     cd ../
-    mv ${DECADE}s/${DECADE}s.pdf . && rm -rf ${DECADE}s
+    mv ${CURRENT_DECADE}s/${CURRENT_DECADE}s.pdf . && rm -rf ${CURRENT_DECADE}s
     cd ../../../../../../
-    DECADE=`expr $DECADE - 10`
+    CURRENT_DECADE=`expr $CURRENT_DECADE + 10`
 done
 
 mkdir The\ Buzzer\ Compilation
