@@ -1,19 +1,18 @@
-#!/bin/bash
-END_YEAR=2019
-END_DECADE=2010
-START_YEAR=1910
-START_DECADE=1910
+echo "Hello, "$USER", and welcome to the Translink Buzzer download tool!"
+read -p "Please enter the year in which to begin downloads (1910-2019): " START_YEAR
+START_DECADE='expr $START_YEAR / 10 \* 10'
 
-CURRENT_YEAR = $START_YEAR
-CURRENT_DECADE = $START_DECADE
+read -p "Please enter the year in which to end downloads (1910-2019): " END_YEAR
+END_DECADE='expr $END_YEAR / 10 \* 10'
 
-echo "Welcome to the Translink Buzzer download tool\nPlease enter"
+CURRENT_YEAR=$START_YEAR
+CURRENT_DECADE=$START_DECADE
 
 while [ $CURRENT_DECADE -le $END_DECADE ]
 do
     while [ $CURRENT_YEAR -le $END_YEAR ]
     do
-        wget -r -A *.pdf https://www.translink.ca/Rider-Guide/Print-Buzzer.aspx?END_YEAR=$CURRENT_YEAR
+        wget -r -A *.pdf https://www.translink.ca/Rider-Guide/Print-Buzzer.aspx?year=$CURRENT_YEAR
         cd www.translink.ca/-/media/Documents/rider_guide/Buzzer-Vault/${CURRENT_DECADE}s/
         mv ${CURRENT_YEAR}/* .
         rmdir ${CURRENT_YEAR}
